@@ -8,37 +8,12 @@
       "descricao": "Exemplo de descricao"
     },
     {
-      "titulo": "teste",
+      "titulo": "Pastel",
+      "sabor": "Carne",
+      "preco": "15,00",
+      "descricao": "Pastel de carne com azeitona",
+      "imagem": null,
       "id": 1
-    },
-    {
-      "titulo": "",
-      "id": 2
-    },
-    {
-      "titulo": "teste",
-      "id": 3
-    },
-    {
-      "titulo": "oi",
-      "id": 4
-    },
-    {
-      "titulo": "ola",
-      "id": 5
-    },
-    {
-      "titulo": "titulo exemplo",
-      "id": 6
-    },
-    {
-      "sabor": "sabor exemplo",
-      "id": 7
-    },
-    {
-      "titulo": "tested1111",
-      "sabor": "tested2222",
-      "id": 8
     }
   ]
 }

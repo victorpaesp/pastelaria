@@ -1,36 +1,41 @@
 <template>
   <div class="#app"> 
+    <Background />
     <Wave />
     <Form />
-    <input type="text" v-model="itemTeste" @keyup.enter="addItem" class="teste">
     
-    <input type="text" v-model="itemTeste2" @keyup.enter="addItem" class="teste3">
+    <Division />
+    <!--<input type="text" v-model="itemTeste" @keyup.enter="addItem" class="teste">
+
+    <input type="text" v-model="itemTeste2" @keyup.enter="addItem" class="teste3">-->
     <!--<ul>
     <li v-for="item of itens" :key="item.id" class="teste2"></li></ul>-->
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import Background from './components/atoms/Background.vue';
 import Wave from './components/atoms/Wave.vue';
 import Form from './components/molecules/Form.vue';
-import './assets/styles/global.css';
 
-const baseURL = "http://localhost:3000/itens";
+import Division from './components/atoms/Division.vue';
+import './assets/styles/global.css';
 
 export default {
   name: 'App',
-  data() {
+  /*data() {
     return {
       itens: [],
       itemTeste: '',
       itemTeste2: '',
     }
-  },
+  },*/
   components: {
+    Background,
     Wave,
-    Form
-  },
+    Form,
+    Division
+  }/*,
   async created() {
     try {
       const res = await axios.get(`baseURL`);
@@ -51,7 +56,7 @@ export default {
       
       this.itemTeste2 = '';
     }
-  }
+  }*/
 }
 </script>
 
@@ -66,13 +71,16 @@ html {
 } 
 
 body {
-    min-height: 100vh;
-    max-width: 75%;
+    top: 2px;
+    left: 8px;
+    width: 1920px;
+    height: 1233px;
     background: transparent url('./assets/img/patterns/pattern-1.png') 0% 0% padding-box;
-    margin: 0 auto;
     position: relative;
 }
 
+
+/*
 .teste {
   background-color: red;
   width: 200px;
@@ -95,5 +103,5 @@ body {
   height: 200px;
   position: absolute;
   left: 0;
-}
+}*/
 </style>

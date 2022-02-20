@@ -3,7 +3,7 @@
           <input type="file" 
             accept="image/*" class="input-file">
             <p>
-             Icon<br> Jogue aqui o arquivo de imagem do seu pastel ou clique para localizar a pasta.
+            <i class="bi bi-image"></i><br> Jogue aqui o arquivo de imagem do seu pastel ou clique para localizar a pasta.
             </p>
         </div>
 
@@ -24,7 +24,7 @@ export default {
     border: 1px solid #E43636;
     border-radius: 10px;
     opacity: 1;
-    font: normal normal normal 16px/21px Roboto;
+    font: normal normal normal 15.7px/21px Roboto;
     letter-spacing: 0px;
     opacity: 1;
     cursor: pointer;
@@ -44,6 +44,12 @@ export default {
   
   .dropbox p {
     text-align: center;
+    line-height: 30px;
+  }
+
+  .bi.bi-image {
+    font-size: 49px;
+    color: #E43636;
   }
 
 </style>

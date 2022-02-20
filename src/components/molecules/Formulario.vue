@@ -1,10 +1,10 @@
 <template>
   <div>
-      <form action="" id="form-pastel" @submit="criarItem">
+      <form action="." id="form-pastel"  @submit="addItem">
         <div class="start-row">
             <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do Pedido"/>
-            <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
-            <Input id="preco"  name="preco"  v-model="preco"  placeholder="R$" step="0.01" min="0.01"/>
+            <Input id="sabor"  name="sabor"  v-model="sabor" placeholder="Sabor"/>
+            <Input id="preco"  name="preco"  v-model="preco" placeholder="R$" step="0.01" min="0.01"/>
         </div>
         <div class="middle-row">
             <Textarea id="descricao" name="descricao" v-model="descricao" placeholder="Descrição" />
@@ -12,49 +12,70 @@
         <div class="end-row">
             <InputFile /> 
         </div>
+    <Button />
 
-        <Button />
     </form>
+    
+    <!--<button style="height: 200px; width: 200px; position: absolute; top: 200px;" @click="deleteProduct()">Delete</button>-->
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+import Button from '@/components/atoms/Button.vue'
 import Input from '@/components/atoms/Input.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
 import InputFile from '@/components/atoms/InputFile.vue';
-import Button from '@/components/atoms/Button.vue';
+
+const baseURL = "http://localhost:3000/itens";
 
 export default {
     name: 'Formulario',
     data() {
         return {
+            itens: [],
+            itemTeste: '',
             titulo: null,
             sabor: null,
             preco: null,
             descricao: null,
             imagem: null,
-            msg: null
         }
     },
     components: {
         Input,
-        Button,
         Textarea,
-        InputFile
+        InputFile,
+        Button
     },
+  /*  async created() {
+    try {
+      const res = await axios.get(`baseURL`);
+      this.itens = res.data; 
+    } catch (e) {
+      console.error(e);
+    }
+  },*/
     methods: {
-        async criarItem (e) {
-            e.preventDefault();
-
-            const data = {
-                titulo:    this.titulo,
-                sabor:     this.sabor,
-                preco:     this.preco,
-                descricao: this.descricao
-
-            }
-            
-            console.log(data);
+        async addItem(){
+            const res = await axios.post(baseURL, { 
+                titulo: this.titulo,
+                sabor: this.sabor,
+                preco: this.preco,
+                descricao: this.descricao,
+                imagem: this.imagem
+            })
+      
+        this.itens = [...this.itens, res.data]
+        
+        this.titulo = '';
+        this.sabor = '';
+        this.preco = '';
+        this.descricao = '';
+        this.imagem = '';
+        },
+        deleteProduct() {
+            axios.delete(`http://localhost:3000/itens/2`);
         }
     }
 }
@@ -62,31 +83,59 @@ export default {
 
 <style>
     #form-pastel {
-        display: grid;
-        grid-template-rows: 15% 32% 43%;
-        grid-row-gap: 1em;
         position: absolute;
-        height: 68%;
-        width: 96%;
-        top: 18%;
-        left: 2%;
+        width: 1140px;
+        top: 73px;
+        left: 20px;
     }
 
     .start-row {
         display: grid;
-        width: 100%;
-        grid-template-columns: 1.3fr 1.3fr 0.4fr;
-        grid-column-gap: 18px;
+        grid-template-columns: 460px 480px 160px;
+        grid-column-gap: 20px;
+        height: 40px;
     }
 
-    .middle-row,
-    .end-row {
-        display: grid;
+    .middle-row {
         width: 100%;
+        padding-top: 20px;
+    }
+
+    .end-row {
+        width: 100%;
+        height: 125px;
+        padding-top: 15px;
     }
 
     input::placeholder,
     textarea::placeholder {        
       color: #A03400;
+      font: normal normal normal 15.5px/20px Roboto;
     }
+
+    
+.teste {
+  background-color: red;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+}
+
+
+.teste3 {
+  background-color: blue;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 200px;
+}
+
+.teste2 {
+  background-color: blue;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 0;
+}
+
 </style>

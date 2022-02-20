@@ -11,8 +11,7 @@ export default {
 <style scoped>  
   img {
     position: absolute;
-    left: 61.1%;
-    top: 19.6%;
-    width: 21%;
+    top: 184.491px;
+    left: 1172px;
   }
 </style>
