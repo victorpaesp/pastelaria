@@ -8,37 +8,52 @@
       "descricao": "Exemplo de descricao"
     },
     {
-      "titulo": "teste",
+      "titulo": "Pastel",
+      "sabor": "Carne",
+      "preco": "15,00",
+      "descricao": "Pastel de carne com azeitona",
+      "imagem": null,
       "id": 1
     },
     {
-      "titulo": "",
+      "titulo": null,
+      "sabor": null,
+      "preco": null,
+      "descricao": null,
+      "imagem": null,
       "id": 2
     },
     {
-      "titulo": "teste",
+      "titulo": "",
+      "sabor": "",
+      "preco": "",
+      "descricao": "",
+      "imagem": "",
       "id": 3
     },
     {
-      "titulo": "oi",
+      "titulo": null,
+      "sabor": null,
+      "preco": null,
+      "descricao": null,
+      "imagem": null,
       "id": 4
     },
     {
-      "titulo": "ola",
+      "titulo": null,
+      "sabor": null,
+      "preco": null,
+      "descricao": null,
+      "imagem": null,
       "id": 5
     },
     {
-      "titulo": "titulo exemplo",
+      "titulo": null,
+      "sabor": null,
+      "preco": null,
+      "descricao": null,
+      "imagem": null,
       "id": 6
-    },
-    {
-      "sabor": "sabor exemplo",
-      "id": 7
-    },
-    {
-      "titulo": "tested1111",
-      "sabor": "tested2222",
-      "id": 8
     }
   ]
 }

@@ -1,30 +1,25 @@
 <template>
-  <div>
-    <img alt="wave-header" src="@/assets/img/wave.png" id="wave-header">
-    <Logo />
-    <Pasteis />
-  </div>
+    <div>
+        <img alt="wave-header" src="@/assets/img/wave.png" id="wave-header">
+    </div>
 </template>
 
 <script>
-import Logo from './Logo.vue';
-import Pasteis from './Pasteis.vue';
 
 export default {
-  name: 'Wave',
-  components: {
-    Logo,
-    Pasteis
-  }
+    name: 'Wave'
 }
 </script>
 
 <style scoped>
-  img {
-    position: absolute;
-  }
+    img {
+        position: absolute;
+    }
 
-  #wave-header {
-    width: 100%;
-  }
+    #wave-header {
+        top: -0.578948974609375px;
+        left: 0px;
+        width: 1921px;
+        height: 546px;
+    }
 </style>

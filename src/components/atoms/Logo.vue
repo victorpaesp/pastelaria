@@ -1,18 +1,17 @@
 <template>
-  <img alt="logo-header" src="@/assets/img/Logo.png">    
+    <img alt="logo-header" src="@/assets/img/Logo.png">    
 </template>
 
 <script>
 export default {
-  name: 'Logo'
+    name: 'Logo'
 }
 </script>
 
 <style scoped>  
-  img {
-    position: relative;
-    left: 27.2%;
-    top: 6.3%;
-    width: 38.3%;
-  }
+    img {
+        position: relative;
+        top: 60.4px;
+        left: 522px;
+    }
 </style>
