@@ -27,6 +27,7 @@ export default {
         letter-spacing: 0;
         padding-top: 3px;
         font: normal normal 900 21px/26px Roboto;
+        cursor: pointer;
     }
 
     .submit-btn {
@@ -44,6 +45,15 @@ export default {
         letter-spacing: 0;
         padding-top: 3px;
         font: normal normal 900 21px/26px Roboto;
+        cursor: pointer;
+    }
+
+    .clear-btn:hover,
+    .submit-btn:hover {
+    
+      border: 2px solid transparent;
+      outline-color: black;
+      outline-offset: 15px;
     }
 
 </style>

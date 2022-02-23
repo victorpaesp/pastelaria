@@ -8,32 +8,35 @@
             </p>
         </div>
         
-      <form action="." id="form-pastel" v-on:submit="addItem">
-        <div class="start-row">
-            <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do Pedido"/>
-            <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
-            <Input id="preco"  name="preco"  v-model="preco"  placeholder="R$" ref="file"/>
-        </div>
-        <div class="middle-row">
-            <Textarea id="descricao" name="descricao" v-model="descricao" placeholder="Descrição" />
-        </div>
-        <div class="end-row">
-            <InputFile id="imagem" name="imagem" v-model="imagem" /> 
-        </div>
-      <Button />
-      </form>
+        <form action="." id="form-pastel" v-on:submit="addItem">
+            <div class="start-row">
+                <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do Pedido"/>
+                <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
+                <Input id="preco"  name="preco"  v-model="preco"  placeholder="R$" />
+            </div>
+            <div class="middle-row">
+                <Textarea id="descricao" name="descricao" v-model="descricao" placeholder="Descrição" />
+            </div>
+            <div class="end-row">
+                <InputFile id="imagem" name="imagem" v-model="imagem" /> 
+            </div>
+        <Button />
+        </form>
     </div>
-      <table style="background-color: red; position: absolute; left: 500px: top: 500px: width: 500px; height: 500px">
-        <tr v-for="item of itens" :key="item.id">
-          <td>{{ item.id }}</td>
-        </tr>
-      </table>
-    
-        <!-- 
-          <button style="height: 100px; width: 100px; position: absolute; top: 515px;" @click="deleteItem()">Delete</button>
 
-          <button style="height: 100px; width: 100px; position: absolute; top: 515px; left:500px" @click="getItem()">Get</button> 
-        -->
+    <div class="card" v-for="item of itens" :key="item.id">
+        <div class="item">
+            <div class="item-header">
+                 <p class="titulo-pedido">"{{ item.titulo }}"</p>
+                 <p class="preco-pedido">R$ {{ item.preco }}</p>
+            </div>
+            <div class="imagem-item">{{ item.imagem }}</div>
+            <p class="sabor-pedido">Sabor: {{ item.sabor }}</p>
+            <p class="descricao-pedido">Descrição: {{ item.descricao }}</p>
+            
+        <button class="del" @click="deleteItem(item.id)">x</button>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -43,7 +46,7 @@ import Button from '@/components/atoms/Button.vue'
 import Input from '@/components/atoms/Input.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
 import InputFile from '@/components/atoms/InputFile.vue';
-import itens from '@/services/itens.js'
+/*import Card from '@/components/molecules/Card.vue'*/
 
 import ToggleButton from '@/components/atoms/ToggleButton.vue';
 
@@ -54,11 +57,12 @@ export default {
     data() {
         return {
             itens: [],
-            titulo: null,
+            id: '',
+            titulo: '',
             sabor: null,
             preco: null,
             descricao: null,
-            imagem: null,
+            imagem: '',
         }
     },
     components: {
@@ -69,9 +73,9 @@ export default {
         ToggleButton
     },
     methods: {
-      addItem(e){
-        e.preventDefault();
+      addItem(){
           const res = axios.post(baseURL, { 
+              id: this.id,
               titulo: this.titulo,
               sabor: this.sabor,
               preco: this.preco,
@@ -80,33 +84,25 @@ export default {
           })
       
           this.itens = [...this.itens, res.data]
-          
+       /*   
           this.titulo = '';
           this.sabor = '';
           this.preco = '';
           this.descricao = '';
-          this.imagem = '';
+          this.imagem = '';*/
         },
-      deleteItem() {
-        axios.delete(`http://localhost:3000/itens/2`);
-      },
-      getItem() {
+      deleteItem(id) {
         axios
-          .get(`http://localhost:3000/itens`)
+            .delete(`http://localhost:3000/itens/${id}`);
+      }
+    },
+    mounted() {
+      axios
+          .get(baseURL)
           .then((res) => {
             this.itens = res.data;
             console.log(res.data);
           })
-      }
-    },
-    created() {
-      /*this.getItem();*/
-    },
-    mounted (){
-      itens.listar().then(resposta => {
-        console.log(resposta.data)
-        this.itens = resposta.data
-      })
     }
 }
 </script>
@@ -209,4 +205,110 @@ export default {
 }
 
 
+
+
+.card {
+        position: relative;
+        top: 270px;
+        left: 60px;
+        height: 270px;      
+    }
+
+    .item {
+        position: absolute;
+        top: 0;
+        left: 420px;
+        width: 1070px;
+        height: 221px;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 0px 0px 30px #740B0B45;
+        border-radius: 20px;
+        opacity: 1;
+    }
+
+    .item-header {
+        display: flex;
+        width: 100%;
+        height: 80px;
+        background: #E43636 0% 0% no-repeat padding-box;
+        border-radius: 20px 20px 0px 0px;
+        opacity: 1;
+    }
+
+    .titulo-pedido {
+        position: absolute;
+        top: 20px;
+        font: italic normal bold 30px/37px Roboto;
+        letter-spacing: 0px;
+        color: #FFCA00;
+        opacity: 1;
+        padding-left: 110px;
+    }
+
+    .preco-pedido {
+        position: absolute;
+        top: 20px;
+        left: 950px;
+        font: italic normal bold 30px/37px Roboto;
+        letter-spacing: 0px;
+        color: #FFFFFF;
+        opacity: 1;
+    }
+
+    .sabor-pedido {
+        position: absolute;
+        top: 99px;
+        left: 0;
+        text-align: center;
+        font: italic normal bold 30px/37px Roboto;
+        letter-spacing: 0px;
+        color: #A03400;
+        opacity: 1;
+        padding-left: 110px;
+    }
+
+    .descricao-pedido {
+        position: absolute;
+        top: 150px;
+        left: 0;
+        text-align: center;
+        font: italic normal bold 30px/37px Roboto;
+        letter-spacing: 0px;
+        color: #A03400;
+        opacity: 1;
+        padding-left: 110px;
+    }
+
+    .imagem-item {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(-50%, -50%);
+        width: 180px;
+        height: 180px;
+        background-color: #FFF;
+        box-shadow: 0px 0px 30px #740B0B45;
+        border-radius: 10px;
+        opacity: 1;
+    }
+
+    .del {
+      position: absolute;
+      top: 90%;
+      left: 98%;
+      border: 0;
+      border-radius: 5px;
+      background-color: #E43636;
+      height: 35px;
+      width: 35px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 20px;
+    }
+
+    .del:hover {     
+      border: 1px solid;
+      outline-color: black;
+      outline-offset: 15px;
+    }
 </style>

@@ -2,12 +2,12 @@
         <div class="principal">
             <div class="item">
                 <div class="item-header">
-                    <p class="titulo-pedido">"Suco de Goiaba"</p>
-                    <p class="preco-pedido">R$5,00</p>
+                    <p class="titulo-pedido">{{ titulo }}</p>
+                    <p class="preco-pedido">{{ preco }}</p>
                 </div>
                 <div class="imagem-item"></div>
-                <p class="sabor-pedido">Sabor:</p>
-                <p class="descricao-pedido">Descrição:</p>
+                <p class="sabor-pedido">Sabor: {{ sabor }}</p>
+                <p class="descricao-pedido">Descrição: {{ descricao }}</p>
             </div>
         </div>
 </template>
@@ -15,7 +15,13 @@
 <script>
 
 export default {
-    name: 'Card'
+    name: 'Card',
+    props: {
+        titulo: String,
+        preco: Number,
+        sabor: String,
+        descricao: String
+    }
 }
 </script>
 

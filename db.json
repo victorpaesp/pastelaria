@@ -1,59 +1,20 @@
 {
   "itens": [
     {
-      "id": 0,
-      "titulo": "Exemplo de título",
-      "sabor": "Exemplo de sabor",
-      "preco": 200,
-      "descricao": "Exemplo de descricao"
+      "id": 1,
+      "titulo": "Pastel",
+      "sabor": "Frango",
+      "preco": "30,00",
+      "descricao": null,
+      "imagem": null
     },
     {
+      "id": 2,
       "titulo": "Pastel",
       "sabor": "Carne",
       "preco": "15,00",
-      "descricao": "Pastel de carne com azeitona",
-      "imagem": null,
-      "id": 1
-    },
-    {
-      "titulo": null,
-      "sabor": null,
-      "preco": null,
       "descricao": null,
-      "imagem": null,
-      "id": 2
-    },
-    {
-      "titulo": "",
-      "sabor": "",
-      "preco": "",
-      "descricao": "",
-      "imagem": "",
-      "id": 3
-    },
-    {
-      "titulo": null,
-      "sabor": null,
-      "preco": null,
-      "descricao": null,
-      "imagem": null,
-      "id": 4
-    },
-    {
-      "titulo": null,
-      "sabor": null,
-      "preco": null,
-      "descricao": null,
-      "imagem": null,
-      "id": 5
-    },
-    {
-      "titulo": null,
-      "sabor": null,
-      "preco": null,
-      "descricao": null,
-      "imagem": null,
-      "id": 6
+      "imagem": "../assets/img/no-image.png"
     }
   ]
 }

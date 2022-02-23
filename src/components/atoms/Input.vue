@@ -17,5 +17,5 @@ export default {
         padding-left: 19.5px; 
         font: normal normal normal 16px/21px Roboto;
         opacity: 1;
-}
+    }
 </style>

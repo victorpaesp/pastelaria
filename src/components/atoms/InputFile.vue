@@ -20,12 +20,10 @@ export default {
 <style>
     .dropbox {
         height: 100%;
-        cursor: pointer;
         border: 1px solid #E43636;
         border-radius: 10px;
         opacity: 1;
         font: normal normal normal 15.7px/21px Roboto;
-        opacity: 1;
         display: flex;
         align-items: center;
         color: #A03400;
@@ -40,6 +38,8 @@ export default {
         opacity: 0;
         position: absolute;
         cursor: pointer;
+        width: 1140px;
+        height: 110px;
     }
 
     .bi.bi-image {

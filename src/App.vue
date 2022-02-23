@@ -4,8 +4,6 @@
     <Images />
     <Formulario />    
     <Division />
-    <Card />
-    <Card />
   </div>
 </template>
 
@@ -14,7 +12,6 @@ import Gradient from './components/atoms/Gradient.vue';
 import Images from './components/molecules/Images.vue';
 import Formulario from './components/molecules/Formulario.vue';
 import Division from './components/atoms/Division.vue';
-import Card from './components/molecules/Card.vue';
 import './assets/styles/global.css';
 
 export default {
@@ -23,8 +20,7 @@ export default {
     Gradient,
     Images,
     Formulario,
-    Division,
-    Card
+    Division
   }
 }
 </script>
@@ -40,7 +36,7 @@ body {
     top: 2px;
     left: 0;
     width: 1920px;
-    height: 1233px;
+    height: 100%;
     background: transparent url('./assets/img/patterns/pattern-1.png') 0% 0% padding-box;
 }
 
