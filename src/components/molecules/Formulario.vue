@@ -21,6 +21,7 @@
                 <InputFile id="imagem" name="imagem" v-model="imagem" /> 
             </div>
         <Button />
+<Testando />
         <p v-if="errors.length">
     <b>Please correct the following error(s):</b>
     <ul>
@@ -53,7 +54,10 @@ import Textarea from '@/components/atoms/Textarea.vue';
 import InputFile from '@/components/atoms/InputFile.vue';
 /*import Card from '@/components/molecules/Card.vue'*/
 
+import Testando from '@/components/molecules/Testando.vue'
+
 import ToggleButton from '@/components/atoms/ToggleButton.vue';
+
 
 const baseURL = "http://localhost:3000/itens";
 
@@ -68,7 +72,9 @@ export default {
             preco: null,
             descricao: null,
             imagem: '',
-            errors: []
+            errors: [],
+            name: "",
+      date: new Date().toISOString().slice(0, 10),
         }
     },
     components: {
@@ -76,7 +82,8 @@ export default {
         Textarea,
         InputFile,
         Button,
-        ToggleButton
+        ToggleButton,
+        Testando
     },
     methods: {
       addItem(e){
@@ -130,7 +137,6 @@ export default {
         }).then((result) => {
           if(result.value) {
             axios.delete(`http://localhost:3000/itens/${id}`);
-            window.location.reload()
           } 
         })
       }
