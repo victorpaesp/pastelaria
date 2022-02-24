@@ -1,8 +1,5 @@
 <template>
     <label :for="id + '_button'" :class="{'active': isActive}" class="toggle__button">
-        <!--<span v-if="isActive" class="toggle__label">{{ enableText }}</span>
-        <span v-if="!isActive" class="toggle__label">{{ disabledText }}</span>-->
-
         <span v-if="!isActive" class="ativo">Comida</span>
         <span v-else>Comida</span>
 

@@ -130,12 +130,12 @@ export default {
         }).then((result) => {
           if(result.value) {
             axios.delete(`http://localhost:3000/itens/${id}`);
-            this.$swal('Deletado', 'O item foi deletado com sucesso!', 'success');
+            window.location.reload()
           } 
         })
       }
     },
-    mounted() {
+    created() {
       axios
           .get(baseURL)
           .then((res) => {
@@ -244,9 +244,6 @@ export default {
     opacity: 1;
     z-index: 2;
 }
-
-
-
 
 .card {
         position: relative;

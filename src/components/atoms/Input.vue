@@ -1,10 +1,15 @@
 <template>
-    <input type="text" class="input" @input="$emit('input', $event.target.value)" />
+    <input type="text" class="input" @input="onInput" />
 </template>
 
 <script>
 export default {
     name: 'Input',
+    methods: {
+        onInput(event) {
+        this.$emit('input', event.target.value);
+        }
+    }
 }
 </script>
 

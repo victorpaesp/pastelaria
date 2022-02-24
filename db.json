@@ -1,12 +1,3 @@
 {
-  "itens": [
-    {
-      "id": 1,
-      "titulo": "Pastel",
-      "sabor": "Frango",
-      "preco": "30,00",
-      "descricao": "dsafsafasfa",
-      "imagem": ""
-    }
-  ]
+  "itens": []
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="#app"> 
+  <div class="#app">
       <Gradient />
       <Images />
       <Formulario />    
@@ -26,19 +26,16 @@ export default {
 </script>
 
 <style>
-html { 
-  background-color: #FFFFFF; 
-  overflow-x: hidden;
-} 
+html {
+  background-color: #FFF;
+}
 
 body {
     position: relative;
-    top: 2px;
+    top: 0px;
     left: 8px;
     width: 1920px;
-    height: 100%;
     background: transparent url('./assets/img/patterns/pattern-1.png') 0% 0% padding-box;
 }
-
 
 </style>

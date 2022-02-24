@@ -1,15 +1,15 @@
 <template>
-    <textarea 
-      class="descricao-item"
-      rows="3"
-      @input="$emit('input', $event.target.value)"
-    >
-    </textarea>
+    <textarea class="descricao-item" rows="3" @input="onInput"></textarea>
 </template>
 
 <script>
 export default {
-    name: 'Textarea'
+    name: 'Textarea',
+    methods: {
+        onInput(event) {
+        this.$emit('input', event.target.value);
+        }
+    }
 }
 </script>
 
