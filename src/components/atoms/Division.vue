@@ -27,7 +27,7 @@ export default {
         width: 705px;
         height: 0px;
         border: 1px solid #E43636;
-        opacity: 1;
+        opacity: 0.5;
     }
 
     .line-left {

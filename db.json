@@ -5,16 +5,8 @@
       "titulo": "Pastel",
       "sabor": "Frango",
       "preco": "30,00",
-      "descricao": null,
-      "imagem": null
-    },
-    {
-      "id": 2,
-      "titulo": "Pastel",
-      "sabor": "Carne",
-      "preco": "15,00",
-      "descricao": null,
-      "imagem": "../assets/img/no-image.png"
+      "descricao": "dsafsafasfa",
+      "imagem": ""
     }
   ]
 }

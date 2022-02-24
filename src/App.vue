@@ -1,9 +1,9 @@
 <template>
   <div class="#app"> 
-    <Gradient />
-    <Images />
-    <Formulario />    
-    <Division />
+      <Gradient />
+      <Images />
+      <Formulario />    
+      <Division />
   </div>
 </template>
 
@@ -34,10 +34,11 @@ html {
 body {
     position: relative;
     top: 2px;
-    left: 0;
+    left: 8px;
     width: 1920px;
     height: 100%;
     background: transparent url('./assets/img/patterns/pattern-1.png') 0% 0% padding-box;
 }
+
 
 </style>

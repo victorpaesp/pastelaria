@@ -10,7 +10,7 @@
         
         <form action="." id="form-pastel" v-on:submit="addItem">
             <div class="start-row">
-                <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do Pedido"/>
+                <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do pedido"/>
                 <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
                 <Input id="preco"  name="preco"  v-model="preco"  placeholder="R$" />
             </div>
@@ -21,6 +21,12 @@
                 <InputFile id="imagem" name="imagem" v-model="imagem" /> 
             </div>
         <Button />
+        <p v-if="errors.length">
+    <b>Please correct the following error(s):</b>
+    <ul>
+      <li v-for="error in errors" :key="error">{{ error }}</li>
+    </ul>
+  </p>
         </form>
     </div>
 
@@ -31,9 +37,8 @@
                  <p class="preco-pedido">R$ {{ item.preco }}</p>
             </div>
             <div class="imagem-item">{{ item.imagem }}</div>
-            <p class="sabor-pedido">Sabor: {{ item.sabor }}</p>
-            <p class="descricao-pedido">Descrição: {{ item.descricao }}</p>
-            
+            <p class="sabor-pedido">Sabor: <span class="pedido-res">{{ item.sabor }}</span></p>
+            <p class="descricao-pedido">Descrição: <span class="pedido-res">{{ item.descricao }}</span></p>
         <button class="del" @click="deleteItem(item.id)">x</button>
         </div>
     </div>
@@ -63,6 +68,7 @@ export default {
             preco: null,
             descricao: null,
             imagem: '',
+            errors: []
         }
     },
     components: {
@@ -73,17 +79,37 @@ export default {
         ToggleButton
     },
     methods: {
-      addItem(){
-          const res = axios.post(baseURL, { 
-              id: this.id,
-              titulo: this.titulo,
-              sabor: this.sabor,
-              preco: this.preco,
-              descricao: this.descricao,
-              imagem: this.imagem
-          })
+      addItem(e){
+
+          if (this.titulo != null && this.sabor != null && this.preco != null) {
+                const res = axios.post(baseURL, { 
+                                  id: this.id,
+                                  titulo: this.titulo,
+                                  sabor: this.sabor,
+                                  preco: this.preco,
+                                  descricao: this.descricao,
+                                  imagem: this.imagem
+                              })
       
-          this.itens = [...this.itens, res.data]
+                this.itens = [...this.itens, res.data];
+              }
+
+              this.errors = [];
+
+              if (this.titulo == null || this.titulo == '') {
+                this.errors.push('Coloque um título do pedido');
+                 e.preventDefault();
+              }
+              if (this.sabor == null || this.sabor == '') {
+                this.errors.push('Coloque o sabor');
+                 e.preventDefault();
+              }
+              if (this.preco == null || this.preco == '') {
+                this.errors.push('Coloque o preço');
+                 e.preventDefault();
+              }
+
+
        /*   
           this.titulo = '';
           this.sabor = '';
@@ -92,8 +118,21 @@ export default {
           this.imagem = '';*/
         },
       deleteItem(id) {
-        axios
-            .delete(`http://localhost:3000/itens/${id}`);
+        this.$swal({
+          title: 'Tem certeza?',
+          text: 'Esta ação não poderá ser desfeita',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Sim',
+          cancelButtonText: 'Cancelar',
+          showCloseButton: true,
+          showLoaderOnConfirm: true
+        }).then((result) => {
+          if(result.value) {
+            axios.delete(`http://localhost:3000/itens/${id}`);
+            this.$swal('Deletado', 'O item foi deletado com sucesso!', 'success');
+          } 
+        })
       }
     },
     mounted() {
@@ -113,6 +152,7 @@ export default {
     width: 1140px;
     top: 73.5px;
     left: 20px;
+    z-index: 2;
   }
 
   .start-row {
@@ -172,7 +212,6 @@ export default {
     box-shadow: 0px 0px 30px #740B0B45;
     border-radius: 20px;
     opacity: 1;
-    z-index: 0;
 }
 
 .form-header {
@@ -192,6 +231,7 @@ export default {
     font: italic normal bold 22.5px/31px Roboto;
     letter-spacing: 0.5px;
     opacity: 1;
+    z-index: 2;
 }
 
 .switch {
@@ -202,6 +242,7 @@ export default {
     letter-spacing: 0px;
     color: #A03400;
     opacity: 1;
+    z-index: 2;
 }
 
 
@@ -209,7 +250,7 @@ export default {
 
 .card {
         position: relative;
-        top: 270px;
+        top: 277px;
         left: 60px;
         height: 270px;      
     }
@@ -248,8 +289,8 @@ export default {
     .preco-pedido {
         position: absolute;
         top: 20px;
-        left: 950px;
-        font: italic normal bold 30px/37px Roboto;
+        left: 930px;
+        font: italic normal bold 24px/37px Roboto;
         letter-spacing: 0px;
         color: #FFFFFF;
         opacity: 1;
@@ -257,22 +298,27 @@ export default {
 
     .sabor-pedido {
         position: absolute;
-        top: 99px;
+        top: 110px;
         left: 0;
         text-align: center;
-        font: italic normal bold 30px/37px Roboto;
-        letter-spacing: 0px;
+        font: italic normal bold 23px/37px Roboto;
+        letter-spacing: 1px;
         color: #A03400;
         opacity: 1;
         padding-left: 110px;
     }
 
+    .pedido-res {
+        font-weight: normal;
+        font-style: normal;
+    }
+
     .descricao-pedido {
         position: absolute;
-        top: 150px;
+        top: 155px;
         left: 0;
         text-align: center;
-        font: italic normal bold 30px/37px Roboto;
+        font: italic normal bold 23px/37px Roboto;
         letter-spacing: 0px;
         color: #A03400;
         opacity: 1;
@@ -282,8 +328,8 @@ export default {
     .imagem-item {
         position: absolute;
         top: 50%;
-        left: 0;
-        transform: translate(-50%, -50%);
+        left: -110px;
+        transform: translate(0%, -50%);
         width: 180px;
         height: 180px;
         background-color: #FFF;
