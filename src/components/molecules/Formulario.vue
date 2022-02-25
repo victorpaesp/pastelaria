@@ -1,18 +1,16 @@
 <template>
   <div>
-    <div class="form">
+    <!-- Formulário -->
+    <div class="form-card">
         <div class="form-header">
             <p class="text-header">Monte aqui o seu cardápio. O que está esperando?</p>
-            <p class="switch"> 
-                <ToggleButton />
-            </p>
+            <p class="switch"><ToggleButton /></p>
         </div>
-        
-        <div id="form-pastel" > 
+        <form id="form-pastel"> 
             <div class="start-row">
                 <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do pedido"/>
                 <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
-                <Input id="preco"  name="preco"  v-model="preco"  placeholder="R$" />
+                <Input id="preco"  name="preco"  v-model="preco" v-money="money" /> <div class="reais">R$</div>
             </div>
             <div class="middle-row">
                 <Textarea id="descricao" name="descricao" v-model="descricao" placeholder="Descrição" />
@@ -21,7 +19,7 @@
                 <InputFile id="imagem" name="imagem" v-model="imagem" /> 
             </div>
      <!--   <Testando />  -->
-      <Button @on-click="createItem" />
+      <Button @on-click="createItem"/>
         <p v-if="errors.length">
     <b>Please correct the following error(s):</b>
     <ul>
@@ -29,7 +27,7 @@
     </ul>
   </p>
  
-        </div>
+        </form>
     </div>
 
 
@@ -41,7 +39,8 @@
             </div>
             <div class="imagem-item">{{ comida.imagem }}</div>
             <p class="sabor-pedido">Sabor: <span class="pedido-res">{{ comida.sabor }}</span></p>
-            <p class="descricao-pedido">Descrição: <span class="pedido-res">{{ comida.descricao }}</span></p>
+            <p class="descricao-pedido">Descrição: <span class="pedido-res">{{ comida.descricao }}</span></p>         
+        <button class="upd" @click="updateItem(comida.id)"><i class="bi bi-gear testeta"></i></button>
         <button class="del" @click="deleteItem(comida.id)">x</button>
         </div>
     </div>
@@ -60,9 +59,9 @@ import InputFile from '@/components/atoms/InputFile.vue';
 import ToggleButton from '@/components/atoms/ToggleButton.vue';
 /*import Testando from '@/components/molecules/Testando.vue'*/
 import firebase from "../../firebaseInit";
-
+  import {VMoney} from 'v-money'
 const db = firebase.firestore();
-
+//const storage = firebase.storage();
 /*const baseURL = "http://localhost:3000/itens";*/
 
 
@@ -75,12 +74,22 @@ export default {
             id: '',
             titulo: '',
             sabor: '',
-            preco: null,
-            descricao: null,
+            preco: '',
+            descricao: '',
             imagem: '',
             errors: [],
-            comidasData: []
+            comidasData: [],
+            // Dados do v-money Mask
+            money: {
+              decimal: ',',
+              thousands: '.',
+              precision: 2,
+              masked: false /* doesn't work with directive */
         }
+        }
+    },
+    directives: {
+      money: VMoney
     },
     components: {
         Input,
@@ -140,10 +149,10 @@ export default {
         createItem() {
             if (this.titulo != '' && this.sabor != '' && this.preco != '') {
                 db.collection("comidas")
-                .add({ titulo: this.titulo, sabor: this.sabor, preco: this.preco, descricao: this.descricao })
+                .add({ titulo: this.titulo, sabor: this.sabor, preco: this.preco, descricao: this.descricao})
                 .then(() => {
                     console.log("Document successfully written!");
-                   // this.readEmployees();
+                   // this.readItem();
                 })
                 .catch((error) => {
                     console.error("Error writing document: ", error);
@@ -155,37 +164,71 @@ export default {
                 this.descricao = "";
             }
         },
-        deleteItem(id) {
+        updateItem(id) {
             db.collection("comidas")
-            .doc(id)
-            .delete()
-            .then(() => {
-              console.log("Document successfully deleted!");
-            })
-            .catch((error) => {
-              console.error("Error removing document: ", error);
-        });
-    }
+              .doc(id)
+              .update({
+                titulo: this.titulo,
+                sabor: this.sabor,
+              })
+              .then(() => {
+                console.log("Document successfully updated!");
+              })
+              .catch((error) => {
+                console.error("Error updating document: ", error);
+              });
+        },
+        deleteItem(id) {
+            this.$swal({
+                title: 'Tem certeza?',
+                text: 'Esta ação não poderá ser desfeita',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim',
+                cancelButtonText: 'Cancelar',
+                showCloseButton: true,
+                showLoaderOnConfirm: true
+              })
+              .then((result) => {
+                  if(result.value) {
+                    db.collection("comidas")
+                    .doc(id)
+                    .delete()
+                    .then(() => {
+                        console.log("Document successfully deleted!");
+                        this.readItem();
+                    })
+                    .catch((error) => {
+                        console.error("Error removing document: ", error);
+                    });
+                  } 
+              })
+        },
+        readItem() {
+            this.comidasData = [];
+                db.collection("comidas")
+                  .get()
+                  .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                    this.comidasData.push({
+                        id: doc.id,
+                        titulo: doc.data().titulo,
+                        sabor: doc.data().sabor,
+                        preco: doc.data().preco,
+                        descricao: doc.data().descricao,
+                      });
+                      console.log(doc.id, " => ", doc.data());
+                    });
+                  })
+                  .catch((error) => {
+                    console.log("Error getting documents: ", error);
+                  });
+        },
+        salvarImagemFirebase() {
+        }
     },
     created() {
-      this.comidasData = [];
-      db.collection("comidas")
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-           this.comidasData.push({
-              id: doc.id,
-              titulo: doc.data().titulo,
-              sabor: doc.data().sabor,
-              preco: doc.data().preco,
-              descricao: doc.data().descricao,
-            });
-            console.log(doc.id, " => ", doc.data());
-          });
-        })
-        .catch((error) => {
-          console.log("Error getting documents: ", error);
-        });
+      this.readItem()
     }
   
 }
@@ -247,7 +290,7 @@ export default {
     left: 0;
   }
 
-.form {
+.form-card {
     position: relative;
     top: 78px;
     left: 0;
@@ -331,7 +374,7 @@ export default {
     .preco-pedido {
         position: absolute;
         top: 20px;
-        left: 930px;
+        left: 910px;
         font: italic normal bold 24px/37px Roboto;
         letter-spacing: 0px;
         color: #FFFFFF;
@@ -399,4 +442,35 @@ export default {
       outline-color: black;
       outline-offset: 15px;
     }
+
+    .upd {
+      position: absolute;
+      top: 90%;
+      left: 94%;
+      border: 0;
+      border-radius: 5px;
+      background-color: #a7a7a7;
+      height: 35px;
+      width: 35px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #preco {
+      padding-left: 40px;
+    }
+
+    .reais {
+      position: absolute;
+      left: 1000px;
+      top: 10px;
+    }
+    .testeta {
+      color: #FFF;
+    }
+
 </style>
