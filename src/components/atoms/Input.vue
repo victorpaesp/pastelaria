@@ -1,5 +1,5 @@
 <template>
-    <input type="text" class="input" @input="onInput" />
+    <input type="text" class="input" v-bind="$attrs" @input="onInput" />
 </template>
 
 <script>
@@ -9,7 +9,8 @@ export default {
         onInput(event) {
         this.$emit('input', event.target.value);
         }
-    }
+    },
+    inheritAttrs: false
 }
 </script>
 

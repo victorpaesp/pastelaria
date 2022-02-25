@@ -1,35 +1,39 @@
 <template>
   <div class="testando">
-      <input
-        placeholder="John Doe"
-        v-model="name"
-        @blur="createEmployee(name, date)"
-      />
-      <button round slot="reference" type="success"
-        >Add New Employee</button      >
+      <input placeholder="John Doe" />
+      <input placeholder="John Doe" v-model="sabor" />
+      <Input v-model="titulo" />
+      <button type="success" @click="createEmployee()">Add New Employee</button>
     
         
   </div>
 </template>
 
 <script>
-        import firebase from "../../firebaseInit";
-        const db = firebase.firestore();
-        export default {
-            name: 'Testando',
-        data() {
-            return {
-            name: "",
-            date: new Date().toISOString().slice(0, 10),
+import Input from '@/components/atoms/Input.vue'
+import firebase from "../../firebaseInit";
+
+const db = firebase.firestore();
+
+export default {
+    name: 'Testando',
+    components: {
+      Input
+    },
+    data() {
+        return {
+            comidasData: [],
+            titulo: '',
+            sabor: '',
             employeesData: [],
             search: "",
-            };
-        },
-        methods: {
-            createEmployee(name, date) {
-            if (name != "") {
-                db.collection("employees")
-                .add({ date: date, name: name })
+        };
+    },
+    methods: {
+        createEmployee() {
+            if (this.titulo != '' && this.sabor != '') {
+                db.collection("comidas")
+                .add({ titulo: this.titulo, sabor: this.sabor })
                 .then(() => {
                     console.log("Document successfully written!");
                     this.readEmployees();
@@ -37,9 +41,48 @@
                 .catch((error) => {
                     console.error("Error writing document: ", error);
                 });
-                this.name = "";
-            }
-            },
+                this.titulo = "";
+    }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             readEmployees() {
             this.employeesData = [];
             db.collection("employees")

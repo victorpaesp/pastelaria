@@ -1,7 +1,7 @@
 <template>
     <div>
-        <input type="reset"  class="clear-btn"  value="LIMPAR" />
-        <input type="submit" class="submit-btn" value="CADASTRAR" /> 
+        <button class="clear-btn"   > LIMPAR </button>
+        <input type="submit" class="submit-btn"  value="CADASTRAR" @click="$emit('on-click')"> 
     </div>
 </template>
 

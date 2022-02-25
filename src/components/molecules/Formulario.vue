@@ -8,7 +8,7 @@
             </p>
         </div>
         
-        <form action="." id="form-pastel" v-on:submit="addItem">
+        <div id="form-pastel" > 
             <div class="start-row">
                 <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do pedido"/>
                 <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
@@ -20,61 +20,66 @@
             <div class="end-row">
                 <InputFile id="imagem" name="imagem" v-model="imagem" /> 
             </div>
-        <Button />
-<Testando />
+     <!--   <Testando />  -->
+      <Button @on-click="createItem" />
         <p v-if="errors.length">
     <b>Please correct the following error(s):</b>
     <ul>
       <li v-for="error in errors" :key="error">{{ error }}</li>
     </ul>
   </p>
-        </form>
+ 
+        </div>
     </div>
 
-    <div class="card" v-for="item of itens" :key="item.id">
+
+   <div class="card" v-for="comida in comidasData" :key="comida.id">
         <div class="item">
             <div class="item-header">
-                 <p class="titulo-pedido">"{{ item.titulo }}"</p>
-                 <p class="preco-pedido">R$ {{ item.preco }}</p>
+                 <p class="titulo-pedido">"{{ comida.titulo }}"</p>
+                 <p class="preco-pedido">R$ {{ comida.preco }}</p>
             </div>
-            <div class="imagem-item">{{ item.imagem }}</div>
-            <p class="sabor-pedido">Sabor: <span class="pedido-res">{{ item.sabor }}</span></p>
-            <p class="descricao-pedido">Descrição: <span class="pedido-res">{{ item.descricao }}</span></p>
-        <button class="del" @click="deleteItem(item.id)">x</button>
+            <div class="imagem-item">{{ comida.imagem }}</div>
+            <p class="sabor-pedido">Sabor: <span class="pedido-res">{{ comida.sabor }}</span></p>
+            <p class="descricao-pedido">Descrição: <span class="pedido-res">{{ comida.descricao }}</span></p>
+        <button class="del" @click="deleteItem(comida.id)">x</button>
         </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import Button from '@/components/atoms/Button.vue'
+/*import axios from 'axios';*/
+import Button from '@/components/atoms/Button.vue';
 import Input from '@/components/atoms/Input.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
 import InputFile from '@/components/atoms/InputFile.vue';
 /*import Card from '@/components/molecules/Card.vue'*/
 
-import Testando from '@/components/molecules/Testando.vue'
 
 import ToggleButton from '@/components/atoms/ToggleButton.vue';
+/*import Testando from '@/components/molecules/Testando.vue'*/
+import firebase from "../../firebaseInit";
+
+const db = firebase.firestore();
+
+/*const baseURL = "http://localhost:3000/itens";*/
 
 
-const baseURL = "http://localhost:3000/itens";
 
 export default {
     name: 'Formulario',
     data() {
         return {
-            itens: [],
+            comidas: [],
             id: '',
             titulo: '',
-            sabor: null,
+            sabor: '',
             preco: null,
             descricao: null,
             imagem: '',
             errors: [],
-            name: "",
-      date: new Date().toISOString().slice(0, 10),
+            comidasData: []
         }
     },
     components: {
@@ -83,10 +88,10 @@ export default {
         InputFile,
         Button,
         ToggleButton,
-        Testando
+        /*Testando*/
     },
     methods: {
-      addItem(e){
+    /*  addItem(e){
 
           if (this.titulo != null && this.sabor != null && this.preco != null) {
                 const res = axios.post(baseURL, { 
@@ -115,40 +120,74 @@ export default {
                 this.errors.push('Coloque o preço');
                  e.preventDefault();
               }
-
-
-       /*   
-          this.titulo = '';
-          this.sabor = '';
-          this.preco = '';
-          this.descricao = '';
-          this.imagem = '';*/
         },
-      deleteItem(id) {
-        this.$swal({
-          title: 'Tem certeza?',
-          text: 'Esta ação não poderá ser desfeita',
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Sim',
-          cancelButtonText: 'Cancelar',
-          showCloseButton: true,
-          showLoaderOnConfirm: true
-        }).then((result) => {
-          if(result.value) {
-            axios.delete(`http://localhost:3000/itens/${id}`);
+        deleteItem(id) {
+            this.$swal({
+              title: 'Tem certeza?',
+              text: 'Esta ação não poderá ser desfeita',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Sim',
+              cancelButtonText: 'Cancelar',
+              showCloseButton: true,
+              showLoaderOnConfirm: true
+            }).then((result) => {
+              if(result.value) {
+                axios.delete(`http://localhost:3000/itens/${id}`);
           } 
         })
-      }
+        },*/
+        createItem() {
+            if (this.titulo != '' && this.sabor != '' && this.preco != '') {
+                db.collection("comidas")
+                .add({ titulo: this.titulo, sabor: this.sabor, preco: this.preco, descricao: this.descricao })
+                .then(() => {
+                    console.log("Document successfully written!");
+                   // this.readEmployees();
+                })
+                .catch((error) => {
+                    console.error("Error writing document: ", error);
+                });
+
+                this.titulo = "";
+                this.sabor = "";
+                this.preco = "";
+                this.descricao = "";
+            }
+        },
+        deleteItem(id) {
+            db.collection("comidas")
+            .doc(id)
+            .delete()
+            .then(() => {
+              console.log("Document successfully deleted!");
+            })
+            .catch((error) => {
+              console.error("Error removing document: ", error);
+        });
+    }
     },
     created() {
-      axios
-          .get(baseURL)
-          .then((res) => {
-            this.itens = res.data;
-            console.log(res.data);
-          })
+      this.comidasData = [];
+      db.collection("comidas")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+           this.comidasData.push({
+              id: doc.id,
+              titulo: doc.data().titulo,
+              sabor: doc.data().sabor,
+              preco: doc.data().preco,
+              descricao: doc.data().descricao,
+            });
+            console.log(doc.id, " => ", doc.data());
+          });
+        })
+        .catch((error) => {
+          console.log("Error getting documents: ", error);
+        });
     }
+  
 }
 </script>
 
