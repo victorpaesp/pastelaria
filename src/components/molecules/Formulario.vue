@@ -96,6 +96,7 @@ export default {
     name: 'Formulario',
     data() {
         return {
+            filtro: '1',
             // Dados Toggle Button
             toggleActive: false,
             itemTipo: 'Comida',
@@ -177,7 +178,7 @@ export default {
                 .add({itemTipo: this.itemTipo, titulo: this.titulo, sabor: this.sabor, preco: this.preco, descricao: this.descricao, imgItem: this.imagem})
                 .then(() => {
                     console.log("Document successfully written!");
-                   // this.readItem();
+                    this.readItem();
                 })
                 .catch((error) => {
                     console.error("Error writing document: ", error);
@@ -230,6 +231,8 @@ export default {
               })
         },
         readItem() {
+
+        if (this.filtro == '1') {
             this.comidasData = [];
                 db.collection("comidas")
                   .get()
@@ -242,6 +245,7 @@ export default {
                         preco: doc.data().preco,
                         descricao: doc.data().descricao,                        
                         imgItem: doc.data().imgItem,
+                        itemTipo: doc.data().itemTipo,
                       });
                       console.log(doc.id, " => ", doc.data());
                     });
@@ -249,12 +253,56 @@ export default {
                   .catch((error) => {
                     console.log("Error getting documents: ", error);
                   });
+            }
+            if (this.filtro == '2') {
+              db.collection("comidas").where("itemTipo", "==", "Comida")
+              .get()
+              .then((querySnapshot) => {
+                  querySnapshot.forEach((doc) => {
+                    this.comidasData.push({
+                        id: doc.id,
+                        titulo: doc.data().titulo,
+                        sabor: doc.data().sabor,
+                        preco: doc.data().preco,
+                        descricao: doc.data().descricao,                        
+                        imgItem: doc.data().imgItem,
+                        itemTipo: doc.data().itemTipo,
+                      });
+                      // doc.data() is never undefined for query doc snapshots
+                      console.log(doc.id, " => ", doc.data());
+                  });
+              })
+              .catch((error) => {
+                  console.log("Error getting documents: ", error);
+              });
+            } 
+            if (this.filtro == '3') {
+                db.collection("comidas").where("itemTipo", "==", "Bebida")
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                      this.comidasData.push({
+                        id: doc.id,
+                        titulo: doc.data().titulo,
+                        sabor: doc.data().sabor,
+                        preco: doc.data().preco,
+                        descricao: doc.data().descricao,                        
+                        imgItem: doc.data().imgItem,
+                        itemTipo: doc.data().itemTipo,
+                      });
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, " => ", doc.data());
+                    });
+                })
+                .catch((error) => {
+                    console.log("Error getting documents: ", error);
+              });
+            }
         },
     },
     created() {
       this.readItem()
-    }
-  
+    },  
 }
 </script>
 
