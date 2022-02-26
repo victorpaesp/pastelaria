@@ -6,7 +6,7 @@
                 <p class="text-header">Monte aqui o seu cardápio. O que está esperando?</p> 
                 <p class="switch"><ToggleButton @change="triggerToggleEvent" /></p>
             </div>
-            <div id="form-pastel"> 
+            <form onsubmit="event.preventDefault();" id="form-pastel"> 
                 <div class="start-row">
                     <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do pedido"/>
                     <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
@@ -55,7 +55,7 @@
                 </ul>
             </p>
     
-            </div>
+            </form>
         </div>
 
         <!-- Card de item adicionado -->
@@ -96,11 +96,12 @@ export default {
     name: 'Formulario',
     data() {
         return {
+            // Dados Filtro
             filtro: '1',
             // Dados Toggle Button
             toggleActive: false,
             itemTipo: 'Comida',
-            // Dados form
+            // Dados Form
             id: '',
             titulo: '',
             sabor: '',
