@@ -6,7 +6,7 @@
                 <p class="text-header">Monte aqui o seu cardápio. O que está esperando?</p> 
                 <p class="switch"><ToggleButton @change="triggerToggleEvent" /></p>
             </div>
-            <form id="form-pastel"> 
+            <div id="form-pastel"> 
                 <div class="start-row">
                     <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do pedido"/>
                     <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
@@ -55,7 +55,7 @@
                 </ul>
             </p>
     
-            </form>
+            </div>
         </div>
 
         <!-- Card de item adicionado -->
