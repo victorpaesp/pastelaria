@@ -1,12 +1,12 @@
 <template>
-    <label :for="id + '_button'" :class="{'active': isActive}" class="toggle__button">
-        <span v-if="!isActive" class="ativo">Comida</span>
+    <label :class="{'active': itemComida}" class="toggle__button">
+        <span v-if="!itemComida" class="ativo">Comida</span>
         <span v-else>Comida</span>
 
-        <input type="checkbox" :disabled="disabled" :id="id + '_button'" v-model="checkedValue">
+        <input type="checkbox"  v-model="checkedValue">
         <span class="toggle__switch"></span>
 
-        <span v-if="isActive" class="ativo">Bebida</span>
+        <span v-if="itemComida" class="ativo">Bebida</span>
         <span v-else>Bebida</span>
     </label>
 </template>
@@ -14,19 +14,6 @@
 <script>
 export default {
     props: {
-        disabled: {
-            type: Boolean,
-            default: false
-        },
-        labelEnableText: {
-            type: String,
-            default: 'Comida'
-        },
-        
-        labelDisableText: {
-            type: String,
-            default: 'Bebida'
-        },
         id: {
             type: String,
             default: 'primary'
@@ -41,20 +28,9 @@ export default {
             currentState: this.defaultState
         }
     },
-    watch: {
-        defaultState: function defaultState() {
-            this.currentState = Boolean(this.defaultState)
-        }
-    },
     computed: {
-        isActive() {
+        itemComida() {
             return this.currentState;
-        },
-        enableText() {
-            return this.labelEnableText;
-        },
-        disabledText() {
-            return this.labelDisableText;
         },
         checkedValue: {
             get() {

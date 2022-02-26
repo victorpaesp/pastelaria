@@ -1,50 +1,78 @@
 <template>
-  <div>
-    <!-- Formulário -->
-    <div class="form-card">
-        <div class="form-header">
-            <p class="text-header">Monte aqui o seu cardápio. O que está esperando?</p>
-            <p class="switch"><ToggleButton /></p>
-        </div>
-        <form id="form-pastel"> 
-            <div class="start-row">
-                <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do pedido"/>
-                <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
-                <Input id="preco"  name="preco"  v-model="preco" v-money="money" /> <div class="reais">R$</div>
+    <div>
+        <!-- Formulário -->
+        <div class="form-card">
+            <div class="form-header">
+                <p class="text-header">Monte aqui o seu cardápio. O que está esperando?</p> 
+                <p class="switch"><ToggleButton @change="triggerToggleEvent" /></p>
             </div>
-            <div class="middle-row">
-                <Textarea id="descricao" name="descricao" v-model="descricao" placeholder="Descrição" />
-            </div>
-            <div class="end-row">
-                <InputFile id="imagem" name="imagem" v-model="imagem" /> 
-            </div>
-     <!--   <Testando />  -->
-      <Button @on-click="createItem"/>
-        <p v-if="errors.length">
-    <b>Please correct the following error(s):</b>
-    <ul>
-      <li v-for="error in errors" :key="error">{{ error }}</li>
-    </ul>
-  </p>
- 
-        </form>
-    </div>
+            <form id="form-pastel"> 
+                <div class="start-row">
+                    <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do pedido"/>
+                    <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
+                    <Input id="preco"  name="preco"  v-model="preco" v-money="money" /> <div class="reais">R$</div>
+                </div>
+                <div class="middle-row">
+                    <Textarea id="descricao" name="descricao" v-model="descricao" placeholder="Descrição" />
+                </div>
+                <div class="end-row">              
+                <!--   <InputFile id="imagem" name="imagem" v-model="imagem" v-on:previewIMG="previewImage"  /> -->
+                <!--    <input type="file" ref="input1" @change="previewImage" accept="image/*" />-->
+                    <div class="dropbox">
+                        <input type="file" accept="image/*" class="input-file" @change="previewImage" />
+                        <p><i class="bi bi-image"></i> <br> Jogue aqui o arquivo de imagem do seu pastel ou clique para localizar a pasta.</p>
+                    </div>
 
+                    <!-- Carregamento da prévia de como ficará a imagem no card -->
+                    <div v-if="imageData!=null">   
+                      <br> 
+                        <a href="#abrirModal">Prévia da imagem</a>       
+                        <div class="modal" id="abrirModal"> 
+                          <div>
+                              <a href="#fechar" title="Fechar" class="fechar">x</a>         
+                              <div class="item-modal">
+                                  <div class="item-header">
+                                      <p class="titulo-pedido">""</p>
+                                      <p class="preco-pedido">R$ </p>
+                                  </div>
+                                  <div class="imagem-item"><img> </div>
+                                  <p class="sabor-pedido">Sabor: <span class="pedido-res"></span></p>
+                                  <p class="descricao-pedido">Descrição: <span class="pedido-res"></span></p>         
+                                  <button class="upd" ><i class="bi bi-gear testeta"></i></button>
+                                  <button class="del" >x</button>
+                              </div>
+                              <img class="preview" height="180" width="180" :src="imagem">
+                              <br>
+                          </div>
+                        </div>  
+                    </div> 
+                </div>
+            <Button @on-click="createItem"/>
+            <p v-if="errors.length">
+                <b>Please correct the following error(s):</b>
+                <ul>
+                    <li v-for="error in errors" :key="error">{{ error }}</li>
+                </ul>
+            </p>
+    
+            </form>
+        </div>
 
-   <div class="card" v-for="comida in comidasData" :key="comida.id">
-        <div class="item">
-            <div class="item-header">
-                 <p class="titulo-pedido">"{{ comida.titulo }}"</p>
-                 <p class="preco-pedido">R$ {{ comida.preco }}</p>
+        <!-- Card de item adicionado -->
+        <div class="card" v-for="comida in comidasData" :key="comida.id">
+            <div class="item">
+                <div class="item-header">
+                      <p class="titulo-pedido">"{{ comida.titulo }}"</p>
+                      <p class="preco-pedido">R$ {{ comida.preco }}</p>
+                </div>
+                <div class="imagem-item"><img height="100%" width="100%" :src="comida.imgItem"  > </div>
+                <p class="sabor-pedido">Sabor: <span class="pedido-res">{{ comida.sabor }}</span></p>
+                <p class="descricao-pedido">Descrição: <span class="pedido-res">{{ comida.descricao }}</span></p>         
+            <button class="upd" @click="updateItem(comida.id)"><i class="bi bi-gear testeta"></i></button>
+            <button class="del" @click="deleteItem(comida.id)">x</button>
             </div>
-            <div class="imagem-item">{{ comida.imagem }}</div>
-            <p class="sabor-pedido">Sabor: <span class="pedido-res">{{ comida.sabor }}</span></p>
-            <p class="descricao-pedido">Descrição: <span class="pedido-res">{{ comida.descricao }}</span></p>         
-        <button class="upd" @click="updateItem(comida.id)"><i class="bi bi-gear testeta"></i></button>
-        <button class="del" @click="deleteItem(comida.id)">x</button>
         </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -52,16 +80,14 @@
 import Button from '@/components/atoms/Button.vue';
 import Input from '@/components/atoms/Input.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
-import InputFile from '@/components/atoms/InputFile.vue';
+//import InputFile from '@/components/atoms/InputFile.vue';
 /*import Card from '@/components/molecules/Card.vue'*/
 
-
 import ToggleButton from '@/components/atoms/ToggleButton.vue';
-/*import Testando from '@/components/molecules/Testando.vue'*/
 import firebase from "../../firebaseInit";
   import {VMoney} from 'v-money'
 const db = firebase.firestore();
-//const storage = firebase.storage();
+const storage = firebase.storage();
 /*const baseURL = "http://localhost:3000/itens";*/
 
 
@@ -70,22 +96,29 @@ export default {
     name: 'Formulario',
     data() {
         return {
-            comidas: [],
+            // Dados Toggle Button
+            toggleActive: false,
+            itemTipo: 'Comida',
+            // Dados form
             id: '',
             titulo: '',
             sabor: '',
             preco: '',
             descricao: '',
-            imagem: '',
-            errors: [],
-            comidasData: [],
+            imgItem: '',
+            comidas: [],
+            comidasData: [],   
+            errors: [],         
             // Dados do v-money Mask
             money: {
               decimal: ',',
               thousands: '.',
               precision: 2,
-              masked: false /* doesn't work with directive */
-        }
+              masked: false 
+            },
+            // Dados img
+            imageData: null,
+            imagem: ''
         }
     },
     directives: {
@@ -94,62 +127,54 @@ export default {
     components: {
         Input,
         Textarea,
-        InputFile,
+    //    InputFile,
         Button,
-        ToggleButton,
-        /*Testando*/
+        ToggleButton
     },
     methods: {
-    /*  addItem(e){
-
-          if (this.titulo != null && this.sabor != null && this.preco != null) {
-                const res = axios.post(baseURL, { 
-                                  id: this.id,
-                                  titulo: this.titulo,
-                                  sabor: this.sabor,
-                                  preco: this.preco,
-                                  descricao: this.descricao,
-                                  imagem: this.imagem
-                              })
       
-                this.itens = [...this.itens, res.data];
-              }
-
-              this.errors = [];
-
-              if (this.titulo == null || this.titulo == '') {
-                this.errors.push('Coloque um título do pedido');
-                 e.preventDefault();
-              }
-              if (this.sabor == null || this.sabor == '') {
-                this.errors.push('Coloque o sabor');
-                 e.preventDefault();
-              }
-              if (this.preco == null || this.preco == '') {
-                this.errors.push('Coloque o preço');
-                 e.preventDefault();
-              }
+//--------------- Métodos toggle button
+        triggerToggleEvent(value) {
+          this.toggleActive = value;
+          if (value == true) {
+            this.itemTipo = 'Bebida';
+          } else {
+            this.itemTipo = 'Comida';
+          }
         },
-        deleteItem(id) {
-            this.$swal({
-              title: 'Tem certeza?',
-              text: 'Esta ação não poderá ser desfeita',
-              type: 'warning',
-              showCancelButton: true,
-              confirmButtonText: 'Sim',
-              cancelButtonText: 'Cancelar',
-              showCloseButton: true,
-              showLoaderOnConfirm: true
-            }).then((result) => {
-              if(result.value) {
-                axios.delete(`http://localhost:3000/itens/${id}`);
-          } 
-        })
-        },*/
+
+
+//--------------- Métodos upload de imagem
+        previewImage(event) {
+            this.uploadValue = 0;
+            this.imagem = null;
+            this.imageData = event.target.files[0];
+            this.onUpload()
+        },
+        onUpload() {
+            this.imagem = null;
+            const storageRef=storage.ref(`${this.imageData.name}`)
+            .put(this.imageData);
+            storageRef
+            .on(`state_changed`,snapshot=>{
+                this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+                }, 
+                error => {console.log(error.message)},
+                    ()=>{this.uploadValue=100;
+                            storageRef.snapshot.ref.getDownloadURL()
+                            .then((url)=>{
+                                this.imagem = url;
+                                console.log(this.imagem);
+                            });
+                        }      
+              );
+          },
+
+//--------------- Métodos CRUD
         createItem() {
             if (this.titulo != '' && this.sabor != '' && this.preco != '') {
                 db.collection("comidas")
-                .add({ titulo: this.titulo, sabor: this.sabor, preco: this.preco, descricao: this.descricao})
+                .add({itemTipo: this.itemTipo, titulo: this.titulo, sabor: this.sabor, preco: this.preco, descricao: this.descricao, imgItem: this.imagem})
                 .then(() => {
                     console.log("Document successfully written!");
                    // this.readItem();
@@ -215,7 +240,8 @@ export default {
                         titulo: doc.data().titulo,
                         sabor: doc.data().sabor,
                         preco: doc.data().preco,
-                        descricao: doc.data().descricao,
+                        descricao: doc.data().descricao,                        
+                        imgItem: doc.data().imgItem,
                       });
                       console.log(doc.id, " => ", doc.data());
                     });
@@ -224,8 +250,6 @@ export default {
                     console.log("Error getting documents: ", error);
                   });
         },
-        salvarImagemFirebase() {
-        }
     },
     created() {
       this.readItem()
@@ -235,6 +259,8 @@ export default {
 </script>
 
 <style>
+
+/*--------------- FORM --------------- */
   #form-pastel {
     position: absolute;
     width: 1140px;
@@ -333,17 +359,19 @@ export default {
     z-index: 2;
 }
 
-.card {
+/*--------------- CARDS --------------- */
+    .card {
         position: relative;
         top: 277px;
-        left: 60px;
-        height: 270px;      
-    }
+        left: 0;
+        height: 295px;            
+        background: transparent url('../../assets/img/patterns/pattern-1.png') 0% 0% padding-box; 
+        }
 
     .item {
         position: absolute;
         top: 0;
-        left: 420px;
+        left: 475px;
         width: 1070px;
         height: 221px;
         background: #FFFFFF 0% 0% no-repeat padding-box;
@@ -473,4 +501,97 @@ export default {
       color: #FFF;
     }
 
+/*--------------- INPUT FILE --------------- */
+.dropbox {
+        height: 100%;
+        border: 1px solid #E43636;
+        border-radius: 10px;
+        opacity: 1;
+        font: normal normal normal 15.7px/21px Roboto;
+        display: flex;
+        align-items: center;
+        color: #A03400;
+    }
+
+    .dropbox p {
+        text-align: center;
+        line-height: 30px;
+    }
+  
+    .input-file {
+        opacity: 0;
+        position: absolute;
+        cursor: pointer;
+        width: 1140px;
+        height: 110px;
+    }
+
+    .bi.bi-image {
+        font-size: 49px;
+        color: #E43636;
+    }
+
+
+/*--------------- MODAL IMG --------------- */
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: rgba(0,0,0,0.8);
+  z-index: 99999;
+  opacity:0;
+  -webkit-transition: opacity 400ms ease-in;
+  -moz-transition: opacity 400ms ease-in;
+  transition: opacity 400ms ease-in;
+  pointer-events: none;
+}
+
+.modal:target {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal > div {
+  width: 1300px;
+  height: 300px;
+  position: relative;
+  margin: 15% auto;
+  background: #fff;
+}
+
+.preview {
+  border-radius: 10px;
+  position: absolute;
+  top: 61px;
+  left: 50px;
+}
+
+.fechar {
+  position: absolute;
+  width: 30px;
+  right: -15px;
+  top: -20px;
+  text-align: center;
+  line-height: 30px;
+  margin-top: 5px;
+  background: #ff4545;
+  border-radius: 50%;
+  font-size: 16px;
+  color: #8d0000;
+}
+
+.item-modal {
+    position: absolute;
+    top: 40px;
+    left: 160px;
+    width: 1070px;
+    height: 221px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 0px 30px #740B0B45;
+    border-radius: 20px;
+    opacity: 1;
+}
 </style>

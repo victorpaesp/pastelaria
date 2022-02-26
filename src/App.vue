@@ -1,5 +1,5 @@
 <template>
-  <div class="#app">
+  <div class="app">
       <Gradient />
       <Images />
       <Formulario />    
@@ -37,5 +37,4 @@ body {
     width: 1920px;
     background: transparent url('./assets/img/patterns/pattern-1.png') 0% 0% padding-box;
 }
-
 </style>

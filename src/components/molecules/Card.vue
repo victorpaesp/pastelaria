@@ -22,6 +22,55 @@ export default {
         sabor: String,
         descricao: String
     }
+
+    
+    /*  addItem(e){
+
+          if (this.titulo != null && this.sabor != null && this.preco != null) {
+                const res = axios.post(baseURL, { 
+                                  id: this.id,
+                                  titulo: this.titulo,
+                                  sabor: this.sabor,
+                                  preco: this.preco,
+                                  descricao: this.descricao,
+                                  imagem: this.imagem
+                              })
+      
+                this.itens = [...this.itens, res.data];
+              }
+
+              this.errors = [];
+
+              if (this.titulo == null || this.titulo == '') {
+                this.errors.push('Coloque um título do pedido');
+                 e.preventDefault();
+              }
+              if (this.sabor == null || this.sabor == '') {
+                this.errors.push('Coloque o sabor');
+                 e.preventDefault();
+              }
+              if (this.preco == null || this.preco == '') {
+                this.errors.push('Coloque o preço');
+                 e.preventDefault();
+              }
+        },
+        deleteItem(id) {
+            this.$swal({
+              title: 'Tem certeza?',
+              text: 'Esta ação não poderá ser desfeita',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Sim',
+              cancelButtonText: 'Cancelar',
+              showCloseButton: true,
+              showLoaderOnConfirm: true
+            }).then((result) => {
+              if(result.value) {
+                axios.delete(`http://localhost:3000/itens/${id}`);
+          } 
+        })
+        },*/
+
 }
 </script>
 

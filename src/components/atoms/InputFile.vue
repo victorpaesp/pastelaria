@@ -4,6 +4,7 @@
           type="file" 
           accept="image/*" 
           class="input-file"
+          @change="$emit('previewIMG')"
         />
         <p>
             <i class="bi bi-image"></i> <br> Jogue aqui o arquivo de imagem do seu pastel ou clique para localizar a pasta.
@@ -45,5 +46,10 @@ export default {
     .bi.bi-image {
         font-size: 49px;
         color: #E43636;
+    }
+
+    button {
+        position: absolute;
+        left: -20px;
     }
 </style>
