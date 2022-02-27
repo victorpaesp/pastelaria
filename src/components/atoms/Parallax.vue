@@ -1,11 +1,11 @@
 <template>  
-        <kinesis-container class="parallax-element">              
-            <kinesis-element :strength="10"> 
-                <div class="parallax-header">
-                    <img alt="parallax-header" src="@/assets/img/pastel-paralax.png">
-                </div>
-            </kinesis-element>      
-        </kinesis-container>
+    <kinesis-container class="parallax-img">              
+        <kinesis-element :strength="12"> 
+            <div>
+                <img alt="parallax-header" src="@/assets/img/pastel-paralax.png">
+            </div>
+        </kinesis-element>      
+    </kinesis-container>
 </template>
 
 <script>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style scoped>  
-    .parallax-element {
+    .parallax-img {
         position: absolute;
         top: -5.5px;
         left: 44px;

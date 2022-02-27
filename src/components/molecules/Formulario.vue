@@ -49,12 +49,12 @@
                 </div>
             <ClearButton />
             <SubmitButton @sendForm="createItem" />
-            <p v-if="errors.length">
-                <b>Please correct the following error(s):</b>
-                <ul>
-                    <li v-for="error in errors" :key="error">{{ error }}</li>
-                </ul>
-            </p>
+            <div class="warning-errors" v-if="errors.length"> 
+                   
+                <div class="war"> <i class="bi bi-exclamation-triangle"></i>    Os seguintes campos estão sem valor:
+                <p v-for="error in errors" :key="error">{{ error }}</p> 
+                </div>
+            </div>
     
             </form>
         </div>
@@ -67,7 +67,9 @@
                       <p class="titulo-pedido">"{{ comida.titulo }}"</p>
                       <p class="preco-pedido">R$ {{ comida.preco }}</p>
                 </div>
-                <div class="imagem-item"><img height="100%" width="100%" :src="comida.imgItem"  > </div>
+                <div class="imagem-item">                  
+                    <img height="100%" width="100%" :src="comida.imgItem"> 
+                </div>
                 <p class="sabor-pedido">Sabor: <span class="pedido-res">{{ comida.sabor }}</span></p>
                 <p class="descricao-pedido">Descrição: <span class="pedido-res">{{ comida.descricao }}</span></p>         
             <button class="upd" @click="updateItem(comida.id)"><i class="bi bi-gear testeta"></i></button>
@@ -99,7 +101,7 @@ export default {
     data() {
         return {
             // Dados Filtro
-            filtro: 'food',
+            filtro: 'all',
             // Dados Toggle Button
             toggleActive: false,
             itemTipo: 'Comida',
@@ -177,22 +179,33 @@ export default {
 
 //--------------- Métodos CRUD
         createItem() {
-            if (this.titulo != '' && this.sabor != '' && this.preco != '') {
+            if (this.titulo && this.sabor && this.preco != '0,00') {
                 db.collection("comidas")
                 .add({itemTipo: this.itemTipo, titulo: this.titulo, sabor: this.sabor, preco: this.preco, descricao: this.descricao, imgItem: this.imagem})
                 .then(() => {
-                    console.log("Document successfully written!");
+                    console.log("Item criado");
                     this.readItem();
                 })
-                .catch((error) => {
-                    console.error("Error writing document: ", error);
-                });
-
-                this.titulo = "";
-                this.sabor = "";
-                this.preco = "";
-                this.descricao = "";
             }
+            this.errors = [];
+
+            if (!this.titulo) {
+              this.errors.push('Título do pedido')
+            }
+
+            if (!this.sabor) {
+              this.errors.push('Sabor')
+            }
+
+            if (this.preco == '0,00') {
+              this.errors.push('Preço')
+            }
+        
+            this.titulo = "";
+            this.sabor = "";
+            this.preco = "0,00";
+            this.descricao = null;
+            this.imageData = null;
         },
         updateItem(id) {
             db.collection("comidas")
@@ -225,7 +238,7 @@ export default {
                   .doc(id)
                   .delete()
                   .then(() => {
-                      console.log("Document successfully deleted!");
+                      console.log("Item deletado");
                       this.readItem();
                   })
                   .catch((error) => {
@@ -235,6 +248,10 @@ export default {
             })
         },
         readItem() {
+            if (this.imagem == "") {
+              this.imagem = 'https://firebasestorage.googleapis.com/v0/b/pastelaria-9dc69.appspot.com/o/no-img.png?alt=media&token=230134a7-2db0-43ee-a445-a129c683a0fd'
+            }
+
             switch (this.filtro) {
 
                 case "all": 
@@ -417,14 +434,38 @@ export default {
     opacity: 1;
     z-index: 2;
 }
+.warning-errors {
+  position: absolute;
+  top: 365px;
+  left: 300px;
+  border: 1px solid red;
+  padding: 10px;
+  border-radius: 10px;
+  
+}
 
+.war {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 530px;
+  color: red;
+  font-weight: bold;
+}
+
+.war i {
+  position: absolute;
+  top: -1px;
+  left: -40px;
+  font-size: 30px;
+  color: red;
+}
 /*--------------- CARDS --------------- */
     .card {
         position: relative;
         top: 297px;
         left: 0;
         height: 295px;            
-        background: transparent url('../../assets/img/patterns/pattern-1.png') 0% 0% padding-box; 
         }
 
     .item {

@@ -1,5 +1,5 @@
 <template>
-    <div class="filter-button">
+    <div class="filter-btn">
             <label for="all">
                 <input type="radio" name="radio" value="all" id="all" checked="checked"
                 @change="$emit('input', 'all')" />
@@ -54,11 +54,11 @@ export default {
 </script>
 
 <style>
-    .filter-button {
+    .filter-btn {
         position: absolute;
         top: 860px;
         left: 1190px;
-        z-index: 3;
+        z-index: 1;
         width: 350px;
         margin: 20px auto;
         padding: 15px 20px;
@@ -73,7 +73,7 @@ export default {
         color: #fff;
     }
 
-    .filter-button input {
+    .filter-btn input {
         display: none;
     }
 

@@ -1,5 +1,5 @@
 <template>
-    <img alt="logo-header" src="@/assets/img/Logo.png">    
+    <img alt="logo-header" src="@/assets/img/Logo.png" class="logo-header">    
 </template>
 
 <script>
@@ -9,7 +9,7 @@ export default {
 </script>
 
 <style scoped>  
-    img {
+    .logo-header {
         position: relative;
         top: 60.4px;
         left: 522px;

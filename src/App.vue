@@ -31,6 +31,10 @@ html {
 }
 
 body {
+    
+}
+
+.app {
     position: relative;
     top: 0px;
     left: 8px;

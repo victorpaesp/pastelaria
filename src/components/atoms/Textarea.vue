@@ -1,5 +1,5 @@
 <template>
-    <textarea class="descricao-item" rows="3" @input="onInput"></textarea>
+    <textarea class="item-description" rows="3" @input="onInput"></textarea>
 </template>
 
 <script>
@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style>
-  .descricao-item {
+  .item-description {
       width: 100%;
       background: #FFFFFF 0% 0% no-repeat padding-box;
       border: 1px solid #E43636;

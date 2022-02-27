@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img alt="wave-header" src="@/assets/img/wave.png" id="wave-header">
+        <img alt="wave-header" src="@/assets/img/wave.png" class="wave-header">
     </div>
 </template>
 
@@ -11,12 +11,9 @@ export default {
 }
 </script>
 
-<style scoped>
-    img {
+<style>
+    .wave-header {
         position: absolute;
-    }
-
-    #wave-header {
         top: -0.578948974609375px;
         left: 0px;
         width: 1921px;

@@ -1,10 +1,10 @@
 <template>
-    <label :class="{'active': itemComida}" class="toggle__button">
+    <label :class="{'active': itemComida}" class="toggle-btn">
         <span v-if="!itemComida" class="ativo">Comida</span>
         <span v-else>Comida</span>
 
         <input type="checkbox" v-model="checkedValue">
-        <span class="toggle__switch"></span>
+        <span class="toggle-btn__switch"></span>
 
         <span v-if="itemComida" class="ativo">Bebida</span>
         <span v-else>Bebida</span>
@@ -46,18 +46,18 @@ export default {
 </script>
 
 <style scoped>
-    .toggle__button {
+    .toggle-btn {
         vertical-align: middle;
         user-select: none;
         cursor: pointer;
     }
-    .toggle__button input[type="checkbox"] {
+    .toggle-btn input[type="checkbox"] {
         opacity: 0;
         position: absolute;
         width: 1px;
         height: 1px;
     }
-    .toggle__button .toggle__switch {
+    .toggle-btn .toggle-btn__switch {
         display:inline-block;
         height:12px;
         border-radius:6px;
@@ -68,8 +68,8 @@ export default {
         margin-left: 10px;
         transition: all .25s;
     }
-    .toggle__button .toggle__switch::after, 
-    .toggle__button .toggle__switch::before {
+    .toggle-btn .toggle-btn__switch::after, 
+    .toggle-btn .toggle-btn__switch::before {
         content: "";
         position: absolute;
         display: block;
@@ -80,29 +80,29 @@ export default {
         top: -3px;
         transform: translateX(0);
     }
-    .toggle__button .toggle__switch::after {
+    .toggle-btn .toggle-btn__switch::after {
         background: #E33535;
         box-shadow: 0 0 1px #FFFFFF;
     }
-    .toggle__button .toggle__switch::before {
+    .toggle-btn .toggle-btn__switch::before {
         background: #E33535;
         box-shadow: 0 0 0 3px #FFFFFF;
         opacity:0;
     }
-    .active .toggle__switch {
+    .active .toggle-btn__switch {
         background: #FFFFFF;
         box-shadow: inset 0 0 1px #FFFFFF;
     }
-    .active .toggle__switch::after,
-    .active .toggle__switch::before{
+    .active .toggle-btn__switch::after,
+    .active .toggle-btn__switch::before{
         transform:translateX(40px - 18px);
     }
-    .active .toggle__switch::after {
+    .active .toggle-btn__switch::after {
         left: 23px;
         background: #E33535;
         box-shadow: 0 0 1px #E33535;
     }
-    .toggle__switch {
+    .toggle-btn__switch {
         margin-right: 10px;
     }
 
