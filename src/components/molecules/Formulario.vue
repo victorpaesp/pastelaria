@@ -8,7 +8,7 @@
             </div>
             <form onsubmit="event.preventDefault();" id="form-pastel"> 
                 <div class="start-row">
-                    <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do pedido"/>
+                    <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do pedido" />
                     <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
                     <Input id="preco"  name="preco"  v-model="preco" v-money="money" /> <div class="reais">R$</div>
                 </div>
@@ -47,7 +47,8 @@
                         </div>  
                     </div> 
                 </div>
-            <Button @on-click="createItem"/>
+            <ClearButton />
+            <SubmitButton @sendForm="createItem" />
             <p v-if="errors.length">
                 <b>Please correct the following error(s):</b>
                 <ul>
@@ -57,6 +58,7 @@
     
             </form>
         </div>
+        <FilterButton @input="readItem" v-model="filtro"/>
 
         <!-- Card de item adicionado -->
         <div class="card" v-for="comida in comidasData" :key="comida.id">
@@ -76,28 +78,28 @@
 </template>
 
 <script>
-/*import axios from 'axios';*/
-import Button from '@/components/atoms/Button.vue';
+import ClearButton from '@/components/atoms/ClearButton.vue';
+import SubmitButton from '@/components/atoms/SubmitButton.vue';
 import Input from '@/components/atoms/Input.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
+import FilterButton from '@/components/atoms/FilterButton.vue';
 //import InputFile from '@/components/atoms/InputFile.vue';
 /*import Card from '@/components/molecules/Card.vue'*/
 
 import ToggleButton from '@/components/atoms/ToggleButton.vue';
 import firebase from "../../firebaseInit";
-  import {VMoney} from 'v-money'
+import {VMoney} from 'v-money'
+
+//--------------- Dados firebase
 const db = firebase.firestore();
 const storage = firebase.storage();
-/*const baseURL = "http://localhost:3000/itens";*/
-
-
 
 export default {
     name: 'Formulario',
     data() {
         return {
             // Dados Filtro
-            filtro: '1',
+            filtro: 'food',
             // Dados Toggle Button
             toggleActive: false,
             itemTipo: 'Comida',
@@ -130,11 +132,13 @@ export default {
         Input,
         Textarea,
     //    InputFile,
-        Button,
-        ToggleButton
+        ClearButton,
+        SubmitButton,
+        ToggleButton,
+        FilterButton
     },
     methods: {
-      
+
 //--------------- Métodos toggle button
         triggerToggleEvent(value) {
           this.toggleActive = value;
@@ -144,7 +148,6 @@ export default {
             this.itemTipo = 'Comida';
           }
         },
-
 
 //--------------- Métodos upload de imagem
         previewImage(event) {
@@ -216,89 +219,96 @@ export default {
                 showCloseButton: true,
                 showLoaderOnConfirm: true
               })
-              .then((result) => {
-                  if(result.value) {
-                    db.collection("comidas")
-                    .doc(id)
-                    .delete()
-                    .then(() => {
-                        console.log("Document successfully deleted!");
-                        this.readItem();
-                    })
-                    .catch((error) => {
-                        console.error("Error removing document: ", error);
-                    });
-                  } 
-              })
-        },
-        readItem() {
-
-        if (this.filtro == '1') {
-            this.comidasData = [];
-                db.collection("comidas")
-                  .get()
-                  .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                    this.comidasData.push({
-                        id: doc.id,
-                        titulo: doc.data().titulo,
-                        sabor: doc.data().sabor,
-                        preco: doc.data().preco,
-                        descricao: doc.data().descricao,                        
-                        imgItem: doc.data().imgItem,
-                        itemTipo: doc.data().itemTipo,
-                      });
-                      console.log(doc.id, " => ", doc.data());
-                    });
+            .then((result) => {
+                if(result.value) {
+                  db.collection("comidas")
+                  .doc(id)
+                  .delete()
+                  .then(() => {
+                      console.log("Document successfully deleted!");
+                      this.readItem();
                   })
                   .catch((error) => {
-                    console.log("Error getting documents: ", error);
+                      console.error("Error removing document: ", error);
                   });
-            }
-            if (this.filtro == '2') {
-              db.collection("comidas").where("itemTipo", "==", "Comida")
-              .get()
-              .then((querySnapshot) => {
-                  querySnapshot.forEach((doc) => {
-                    this.comidasData.push({
-                        id: doc.id,
-                        titulo: doc.data().titulo,
-                        sabor: doc.data().sabor,
-                        preco: doc.data().preco,
-                        descricao: doc.data().descricao,                        
-                        imgItem: doc.data().imgItem,
-                        itemTipo: doc.data().itemTipo,
-                      });
-                      // doc.data() is never undefined for query doc snapshots
-                      console.log(doc.id, " => ", doc.data());
-                  });
-              })
-              .catch((error) => {
-                  console.log("Error getting documents: ", error);
-              });
-            } 
-            if (this.filtro == '3') {
-                db.collection("comidas").where("itemTipo", "==", "Bebida")
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                      this.comidasData.push({
-                        id: doc.id,
-                        titulo: doc.data().titulo,
-                        sabor: doc.data().sabor,
-                        preco: doc.data().preco,
-                        descricao: doc.data().descricao,                        
-                        imgItem: doc.data().imgItem,
-                        itemTipo: doc.data().itemTipo,
-                      });
-                        // doc.data() is never undefined for query doc snapshots
+                } 
+            })
+        },
+        readItem() {
+            switch (this.filtro) {
+
+                case "all": 
+                    this.comidasData = [];
+                    db.collection("comidas")
+                    .get()
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            this.comidasData.push({
+                                id: doc.id,
+                                titulo: doc.data().titulo,
+                                sabor: doc.data().sabor,
+                                preco: doc.data().preco,
+                                descricao: doc.data().descricao,                        
+                                imgItem: doc.data().imgItem,
+                                itemTipo: doc.data().itemTipo,
+                            });
                         console.log(doc.id, " => ", doc.data());
+                        });
+                    })
+                    .catch((error) => {
+                      console.log("Error getting documents: ", error);
                     });
-                })
-                .catch((error) => {
-                    console.log("Error getting documents: ", error);
-              });
-            }
+                    break;
+
+                case "food":
+                    this.comidasData = [];
+                    db.collection("comidas").where("itemTipo", "==", "Comida")
+                    .get()
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            this.comidasData.push({
+                                id: doc.id,
+                                titulo: doc.data().titulo,
+                                sabor: doc.data().sabor,
+                                preco: doc.data().preco,
+                                descricao: doc.data().descricao,                        
+                                imgItem: doc.data().imgItem,
+                                itemTipo: doc.data().itemTipo,
+                            });
+                            console.log(doc.id, " => ", doc.data());
+                        });
+                    })
+                    .catch((error) => {
+                        console.log("Error getting documents: ", error);
+                    });
+                    break;
+
+                case "drink":
+                    this.comidasData = [];
+                    db.collection("comidas").where("itemTipo", "==", "Bebida")
+                    .get()
+                    .then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            this.comidasData.push({
+                                id: doc.id,
+                                titulo: doc.data().titulo,
+                                sabor: doc.data().sabor,
+                                preco: doc.data().preco,
+                                descricao: doc.data().descricao,                        
+                                imgItem: doc.data().imgItem,
+                                itemTipo: doc.data().itemTipo,
+                            });
+                            console.log(doc.id, " => ", doc.data());
+                        });
+                    })
+                    .catch((error) => {
+                        console.log("Error getting documents: ", error);
+                    });
+                    break;
+
+                default:
+                  console.log('Default');
+            } 
         },
     },
     created() {
@@ -411,7 +421,7 @@ export default {
 /*--------------- CARDS --------------- */
     .card {
         position: relative;
-        top: 277px;
+        top: 297px;
         left: 0;
         height: 295px;            
         background: transparent url('../../assets/img/patterns/pattern-1.png') 0% 0% padding-box; 

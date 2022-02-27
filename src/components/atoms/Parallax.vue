@@ -1,14 +1,11 @@
 <template>  
         <kinesis-container class="parallax-element">              
-            <kinesis-element 
-                :strength="10" 
-            > 
+            <kinesis-element :strength="10"> 
                 <div class="parallax-header">
                     <img alt="parallax-header" src="@/assets/img/pastel-paralax.png">
                 </div>
             </kinesis-element>      
         </kinesis-container>
-     
 </template>
 
 <script>
@@ -25,7 +22,5 @@ export default {
         z-index: 1;
         height: 100vh;
         width: 100%;
-    }
-
-    
+    }    
 </style>

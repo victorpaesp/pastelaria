@@ -3,7 +3,7 @@
         <span v-if="!itemComida" class="ativo">Comida</span>
         <span v-else>Comida</span>
 
-        <input type="checkbox"  v-model="checkedValue">
+        <input type="checkbox" v-model="checkedValue">
         <span class="toggle__switch"></span>
 
         <span v-if="itemComida" class="ativo">Bebida</span>
