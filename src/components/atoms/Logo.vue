@@ -10,7 +10,7 @@ export default {
 
 <style scoped>  
     .logo-header {
-        position: relative;
+        position: absolute;
         top: 60.4px;
         left: 522px;
     }

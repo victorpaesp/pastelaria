@@ -6,7 +6,8 @@
                 <p class="text-header">Monte aqui o seu cardápio. O que está esperando?</p> 
                 <p class="switch"><ToggleButton @change="triggerToggleEvent" /></p>
             </div>
-            <form onsubmit="event.preventDefault();" id="form-pastel"> 
+
+            <form onsubmit="event.preventDefault();" id="form-pastel" ref="formpastel"> 
                 <div class="start-row">
                     <Input id="titulo" name="titulo" v-model="titulo" placeholder="Título do pedido" />
                     <Input id="sabor"  name="sabor"  v-model="sabor"  placeholder="Sabor"/>
@@ -17,7 +18,6 @@
                 </div>
                 <div class="end-row">              
                 <!--   <InputFile id="imagem" name="imagem" v-model="imagem" v-on:previewIMG="previewImage"  /> -->
-                <!--    <input type="file" ref="input1" @change="previewImage" accept="image/*" />-->
                     <div class="dropbox">
                         <input type="file" accept="image/*" class="input-file" @change="previewImage" />
                         <p><i class="bi bi-image"></i> <br> Jogue aqui o arquivo de imagem do seu pastel ou clique para localizar a pasta.</p>
@@ -55,7 +55,6 @@
                 <p v-for="error in errors" :key="error">{{ error }}</p> 
                 </div>
             </div>
-    
             </form>
         </div>
         <FilterButton @input="readItem" v-model="filtro"/>
@@ -203,9 +202,11 @@ export default {
         
             this.titulo = "";
             this.sabor = "";
-            this.preco = "0,00";
-            this.descricao = null;
             this.imageData = null;
+            this.$refs.formpastel.reset();
+        },
+        editItem() {
+
         },
         updateItem(id) {
             db.collection("comidas")
@@ -394,7 +395,7 @@ export default {
 
 .form-card {
     position: relative;
-    top: 78px;
+    top: -203px;
     left: 0;
     width: 1180px;
     height: 392px;
@@ -463,7 +464,7 @@ export default {
 /*--------------- CARDS --------------- */
     .card {
         position: relative;
-        top: 297px;
+        top: 0;
         left: 0;
         height: 295px;            
         }

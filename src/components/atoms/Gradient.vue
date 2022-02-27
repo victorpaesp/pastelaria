@@ -13,7 +13,7 @@ export default {
     .background-shadow {
         position: absolute;
         width: 1920px;
-        height: 1233px;
+        min-height: 100%;
         background: transparent radial-gradient(closest-side at 50% 50%, #FFFFFF 0%, #FFFFFF 67%, #FFFFFF00 100%) 0% 0% no-repeat padding-box;
     }
 </style>

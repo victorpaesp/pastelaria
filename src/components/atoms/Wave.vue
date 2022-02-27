@@ -13,7 +13,7 @@ export default {
 
 <style>
     .wave-header {
-        position: absolute;
+        position: relative;
         top: -0.578948974609375px;
         left: 0px;
         width: 1921px;
